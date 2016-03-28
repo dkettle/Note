@@ -44,3 +44,7 @@ JAVA编程思想
 1.foreach可以用于数组和任何iterable，但是数组并不是iterable，不存在数组到iterable的自动转换。
 
 2.容器不能持有基本类型，但自动包装机制会执行基本类型到容器中所持有的包装器类型之间的双向转换。
+
+第十三章 字符串
+-
+1.toString方法中，如果想打印对象的内存地址，不该使用this，调用this会发生递归调用，而是应该调用super.toString()方法，即object.tostring()
