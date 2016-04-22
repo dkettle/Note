@@ -1,1 +1,86 @@
-git s
+Shortcuts For Sublime and Vim
+=
+
+Sublime
+-
+
+⌘ + X	Cut line
+
+⌘ + ↩	Insert line after
+⌘ + ⇧ + ↩	Insert line before
+
+⌘ + ⌃ + ↑	Move line/selection up
+⌘ + ⌃ + ↓	Move line/selection down
+
+⌘ + L	Select line - Repeat to select next lines
+
+⌘ + D	Select word - Repeat to select next occurrence
+
+⌃ + ⌘ + G	Select all occurrences of current selection
+
+⌃ + M	Jump to closing parentheses Repeat to jump to opening parentheses
+⌃ + ⇧ + M	Select all contents of the current parentheses
+
+⌘ + Left	Move to beginning of line
+⌘ + Right	Move to end of line
+
+⌘ + K, ⌘ + K	Delete from cursor to end of line
+⌘ + K + Delete	Delete from cursor to start of line
+
+⌘ + ]	Indent current line(s)
+⌘ + [	Un-indent current line(s)
+
+⌘ + ⇧ + D	Duplicate line(s)
+
+⌘ + J	Join line below to the end of the current line
+
+⌘ + /	Comment/un-comment current line
+⌘ + ⌥ + /	Block comment current selection
+
+⌘ + Y	Redo, or repeat last keyboard shortcut command
+
+⌘ + ⇧ + V	Paste and indent correctly
+
+⌃ + Space	Select next auto-complete suggestion
+
+⌃ + U	Soft undo; jumps to your last change before undoing change when repeated
+
+⌃ + ⇧ + K	Delete current line of cursor
+
+⌘ + P or ⌘ + T	Quick-open files by name (files already in tab)
+
+⌘ + R	Goto symbol
+
+⌃ + G	Goto line in current file
+
+⌃ + V	Scroll down one page
+
+⌃ + L	Center current line vertically in page
+
+⌘ + Down	Scroll to end of file
+⌘ + Up	Scroll to start of file
+
+⌘ + [NUM]	Jump to tab in current group where num is 1-9
+⌘ + 0	Jump to 10th tab in current group
+
+⌘ + ⇧ + [	Cycle left through tabs
+⌘ + ⇧ + ]	Cycle right through tabs
+
+^ + Tab	    Cycle up through recent tabs
+⇧ + ^ + Tab	Cycle down through recent tabs
+
+⌘ + ⌥ + 1	Revert view to single column
+⌘ + ⌥ + 2	Split view into two columns
+⌘ + ⌥ + 3	Split view into three columns
+⌘ + ⌥ + 4	Split view into four columns
+⌘ + ⌥ + 5	Set view to grid (4 groups)
+
+⌃ + [NUM]	Jump to group where num is 1-4
+⌃ + ⇧ + [NUM]	Move file to specified group where num is 1-4
+
+⌘ + K, ⌘ + U	Transform to Uppercase
+⌘ + K, ⌘ + L	Transform to Lowercase
+
+
+Vim
+-
