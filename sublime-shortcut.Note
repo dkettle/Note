@@ -4,6 +4,16 @@ Shortcuts For Sublime and Vim
 Sublime
 -
 
+ctrl + t, ctrl + t      Go to Definition
+ctrl + t, ctrl + b      Jump Prev
+
+⌘ + F2                  Toggle bookmark
+F2                      Next bookmark
+⇧ + F2                  Previous bookmark
+⇧ + ⌘ + F2              Clear bookmarks
+
+⌘ + Alt + V             Clipboard History，剪切板历史。
+
 ⌘ + X			Cut line
 
 ⌘ + ↩			Insert line after
