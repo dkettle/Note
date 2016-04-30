@@ -1,0 +1,171 @@
+设计模式
+=
+1.单例模式（懒汉式、饿汉式）
+
+在某些情况下，有些对象，我们只需要一个就可以了，比如，一台计算机上可以连好几个打印机，但是这个计算机上的打印程序只能有一个，这里就可以通过单例模式来避免两个打印作业同时输出到打印机中，即在整个的打印过程中我只有一个打印程序的实例。
+
+简单说来，单例模式（也叫单件模式）的作用就是保证在整个应用程序的生命周期中，任何一个时刻，单例类的实例都只存在一个（也可以不存在）。
+
+public class Singleton{ 
+        private static Singleton singleton;
+
+        private static readonly object syncObject = new object();
+
+        private Singleton(){ }
+
+           public static Singleton GetInstance(){
+
+            if (singleton == null){ 
+                lock (syncObject){
+
+                    if (singleton == null){ 
+                        singleton = new Singleton(); 
+                    } 
+                } 
+            } 
+            return singleton; 
+        } 
+} 
+
+ 
+
+public sealed class Singleton { 
+        private static readonly Singleton singleton = new Singleton();
+
+        private Singleton() {  }
+
+        public static Singleton GetInstance() { 
+            return singleton; 
+        } 
+} 
+
+ 
+
+2.工厂模式
+
+有时候实例化这个活动不应该总是公开的进行，也就是不要公开的使用 new 操作符，因为，这样容易造成耦合问题。我们不应该针对实现编程，但是当我们在使用 new 的时候，便是针对实现编程。
+
+    public abstract class AbstractFactory{ 
+        //在抽象工厂中，应该包含所有产品创建的抽象方法 
+        public abstract Button CreateButton(); 
+        public abstract TextBox CreateTextBox(); 
+    } 
+
+    public class WindowsFactory:AbstractFactory{ 
+        public override Button CreateButton(){ 
+            return new WindowsButton(); 
+        }
+
+        public override TextBox CreateTextBox(){ 
+            return new WindowsTextBox(); 
+        } 
+    } 
+
+    public class LinuxFactory:AbstractFactory { 
+        public override Button CreateButton(){ 
+            return new LinuxButton(); 
+        }
+
+        public override TextBox CreateTextBox(){ 
+            return new LinuxTextBox(); 
+        } 
+    } 
+
+    public abstract class Button { 
+        public abstract void DisplayButton(); 
+    } 
+
+    class LinuxButton:Button{ 
+        public override void DisplayButton() { 
+            Console.WriteLine("我的类型是：{0}",this.GetType().ToString()); 
+        } 
+    } 
+
+    class WindowsButton : Button { 
+        public override void DisplayButton(){ 
+            Console.WriteLine("我的类型是：{0}",this.GetType().ToString()); 
+        } 
+    } 
+
+    public abstract class TextBox{ 
+        public abstract void DisplayTextBox(); 
+    } 
+
+    class LinuxTextBox : TextBox{ 
+        public override void DisplayTextBox() { 
+            Console.WriteLine("我的类型是：{0}",this.GetType().ToString()); 
+        } 
+    } 
+
+    class WindowsTextBox:TextBox { 
+        public override void DisplayTextBox(){ 
+            Console.WriteLine("我的类型是：{0}",this.GetType().ToString()); 
+        } 
+    } 
+
+        static void Main(string[] args){ 
+            AbstractFactory factory; 
+            Button button; 
+            TextBox textBox;
+
+           //Windows 下操作 
+            factory = new WindowsFactory(); 
+            button = factory.CreateButton(); 
+            textBox = factory.CreateTextBox(); 
+            button.DisplayButton(); 
+            textBox.DisplayTextBox();
+
+            //Linux 下操作 
+            factory = new LinuxFactory(); 
+            button = factory.CreateButton(); 
+            textBox = factory.CreateTextBox(); 
+            button.DisplayButton(); 
+            textBox.DisplayTextBox();
+
+        } 
+
+ 
+
+3.桥接模式
+
+将抽象化(Abstraction)与实现化(Implementation)分离，使得二者可以独立地变化。
+
+当一个抽象可能有多个实现时，通常用继承来协调它们。抽象类定义对该抽象的接口，而具体的子类则用不同方式加以实现。但是此方法有时不够灵活。继承机制将抽象部分与它的实现部分固定在一起，使得难以对抽象部分和实现部分独立的进行修改、扩充和重用。桥接模式把依赖具体实现，提升为依赖抽象，来完成对象和变化因素之间的低耦合，提高系统的可维护性和扩展性。桥接模式的主要目的是将一个对象的变化与其它变化隔离开，让彼此之间的耦合度最低。
+
+<img src="images/pattern_1.png" alt="jvm物理结构" />
+ 
+
+
+ 
+
+4.适配器模式
+
+适配器模式将一个接口转换成另外一个接口，以符合客户的期望。
+
+
+<img src="images/pattern_2.png" alt="jvm物理结构" />
+
+ 
+ 
+
+5.观察者模式
+
+观察者模式定义了对象之间的一对多依赖，让多个观察者同时监听某一个主题对象，当这个主题对象发生改变时，便会通知所有的观察者更新。
+
+ 
+
+6.模板模式
+
+定义一个操作中的算法的骨架，而将一些步骤延迟到子类中，不改变算法的结构而重定义它的一些步骤。简单的说，模板方法就是用来定义一个算法的模板，而这个模板中的一些具体的实现便放到子类中来完成。模板方法模式中有抽象类和具体类之分，抽象类给出一个算法的的轮廓和骨架，另一些具体类则给出这个算法的各个逻辑步骤，代表这些具体逻辑步骤的方法称为基本方法，而将这些基本方法总汇起来的方法就是模板方法了.。
+
+ 
+
+7.策略模式
+
+策略模式定义了算法族，也就是定义了一系列的算法，并分别对这些算法进行了封装，让这些算法之间可以互换，这个模式的优点在于，当面对算法经常需要改变时，这个模式可以让算法的变化独立于使用算法的客户，也就是说，这个模式可以让算法的变化不会影响到使用算法的客户。同时由于各个算法类是独立的，从而减少了各种算法类与使用算法类（客户）之间的耦合度。
+
+ 
+
+8.代理模式
+
+代理模式为另一个对象提供一种代理（就是替身）以控制对这个对象的访问，使用代理模式创建代理对象，让这个代理对象控制某个对象的访问。
