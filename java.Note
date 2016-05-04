@@ -1,0 +1,8 @@
+Java基础知识
+=
+
+1.Lock，tryLock，lockInterruptibly有什么区别
+-
+lock -> 调用后一直阻塞到获得锁
+tryLock -> 尝试是否能获得锁 如果不能获得立即返回
+lockInterruptibly -> 调用后一直阻塞到获得锁 但是接受中断信号
