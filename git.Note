@@ -1,2 +1,327 @@
 Git常用操作
 =
+
+1.Git是什么？
+-
+Git项目是Linus Torvalds在2005年的时候为了支持Linux kernel项目而开发的。
+
+Git是一个分布式的版本控制系统。
+
+建立一个空目录，从远程服务器上同步一个或多个项目的内容到本地
+
+每个工作目录中都是一个项目的完全拷贝，带有全部的版本历史信息。
+
+查看变化和做提交的时候是不需要联网的。
+
+
+2.为什么使用Git？
+-
+* 速度快  直接快照，而非比较差异,近乎所有操作都可本地执行
+
+* 简单的设计 
+
+* 对非线性开发模式的强力支持（允许上千个并行开发的分支）
+
+* 完全分布式 
+
+* 开源、免费的
+
+* 有能力高效管理类似 Linux 内核一样的超大规模项目（速度和数据量）
+
+
+3.Git的特点
+-
+1) 直接快照，而非比较差异
+
+1) 近乎所有操作本地执行
+
+Git 在本地磁盘上保存着所有有关当前项目的历史更新，因此绝大多数操作都只需要访问本地文件和资源即可，不用联网，并且处理速度飞快。
+
+2) 时刻保持数据完整性
+
+在保存到 Git 之前，所有数据都要进行内容的校验和（checksum）计算，并将此结果作为数据的唯一标识和索引。所以如果文件在传输时变得不完整，或者磁盘损坏导致文件数据缺失，Git都能立即察觉。
+
+Git 使用SHA-1算法计算数据的校验和，通过对文件的内容或目录的结构计算出一个SHA-1值，作为指纹字符串。该字符串由40个十六进制字符组成：
+
+      24b9da6552252987aa493b52f8696cd6d3b00373
+
+Git 的工作完全依赖于这类字符串。每次提交都会保存一个SHA-1值。
+
+
+4.Git的三种状态
+-
+已修改（modified）
+
+已暂存（staged）
+
+已提交（committed）
+
+
+5.Git的三个工作区域
+-
+暂存区域 
+
+工作目录
+
+本地数据目录
+
+
+6.Git的基本工作流程
+1. 在工作目录中修改某些文件。 
+
+2. 对这些修改了的文件作快照，并保存到暂存区域。 
+
+3. 提交更新，将保存在暂存区域的文件快照转储到 git 目录中。
+
+所以，我们可以从文件所处的位置来判断状态：如果是 git 目录中保存着的特定版本文件，就属于已提交状态；如果作了修改并已放入暂存区域，就属于已暂存状态；如果自上次取出后，作了修改但还没有放到暂存区域，就是已修改状态。
+<img src="images/git_1.png" alt="jvm物理结构" />
+
+7.Git文件存储
+-
+blob--文件内容，没有属性信息
+
+tree -- 所有文件名字及其属性的列表
+
+commit--表示修改历史，描述一个个tree之间如何联系起来
+
+tag--标签，它可以指向blob,tree,commit,大部分是commit
+
+<img src="images/git_2.png" alt="jvm物理结构" />
+
+
+1) Git 目录（ .git ）
+
+每个项目都只有一个.git目录，为项目存储所有元数据和对象数据库。包括所有的对象(commits,trees,blobs,tags)，这些对象指向不同的分支。
+
+该目录非常重要，每次克隆镜像仓库的时候，实际拷贝的就是这个目录里面的数据。
+
+2) Git 工作目录
+
+Git的工作目录存储从项目中取出的某个版本的所有文件和目录。
+
+当在项目的不同分支间切换时，工作目录里的文件经常会被替换和删除。所有历史信息都保存在GIT目录(.git)中；
+
+3) Git 暂存区域
+
+所谓的暂存区域只不过是一个简单的文件，一般都放在 Git 目录中。有时候人们会把这个文件叫做索引文件
+
+8.Git 配置
+git config [-l]
+
+这些变量可以存放在以下三个不同的地方：
+
+/etc/gitconfig文件：系统中对所有用户都普遍适用的配置。使用 git config 时用 --system 选项。 
+
+~/.gitconfig文件：用户目录下的配置文件只适用于该用户。使用 git config 时用 --global 选项。 
+
+当前项目的 git 目录中的配置文件（也就是工作目录中的 .git/config 文件）：这里的配置仅仅针对当前项目有效。
+
+每一个级别的配置都会覆盖上层的相同配置。
+
+	用户信息
+	$ git config --global user.name  huajie 
+	$ git config --global user.email  huajie@thunderst.com
+	文本编辑器
+	$ git config --global core.editor vi
+	差异分析工具
+	$ git config --global merge.tool vimdiff 
+	Commit用的模板
+	$ git config --global commit.template ~/.gitmsg.template
+	查看配置信息
+	$ git config -l
+	$ git config --list
+
+9.Git常用命令
+建立代码仓库 
+
+
+	git init  
+	创建一个空的git仓库或初始化一个已存在的仓库，会建一个.git隐藏目录。  
+	在.git目录下，会创建objects, refs/heads, refs/tags和模板文件。  
+	$ mkdir facebox.git facebox  
+	#建立仓库服务器端  
+	$ cd facebox.git  
+	$ git init --bare   
+	$ ls  
+	        branches  config  description  HEAD  hooks  info  objects  refs  
+	#建立仓库客户端，建立一个空的git仓库或重新初始化仓库  
+	      $ cd ../facebox  
+	 $ git init    
+	 $ ls -A  
+          .git   
+
+获取代码库
+
+	git clone [url]  
+	      git clone 默认会把远程仓库整个clone下来，但只会在本地创建master分支。  
+	    如果远程还有其他的分支，此时用git branch -a查看所有分支  
+	    $ git clone gitosis@sprdroid.git.spreadtrum.com.cn:android/3rdparty.git  
+	    $ cd 3rdparty  
+	    $ git branch  
+	        *master #当前分支前面会有 * 号  
+	    $ git branch –r  
+	        origin/HEAD -> origin/master  
+	        origin/master  
+	        origin/sprdroid_cmcc  
+	git 支持http,https,git,ssh协议，我们一般用ssh协议；从android网站下载代码仓库时，可使用git,http协议完成。  
+添加文件到版本库
+	git add [file]  
+	    添加目录下修改、删除、新增加的文件到仓库暂存区  
+	    git add –A    
+	        添加所有文件，包括：untrack,modify,delete  
+	    git add –u    
+	        添加所有track文件，包括：modify,delete  
+	    git add –f  
+	        强制添加被忽略的文件。  
+	    git add .     
+	        添加项目中除delete文件外的其他文件  
+	    git add a.txt c.txt  
+	        只添加某些文件到index（删除的文件需要用git rm）  
+忽略某些文件
+
+	    无需纳入git管理，也不希望出现在untrack文件列表的文件，只对未加入版本控制的文件有效。（共享和独享？？）  
+	    在.gitignore文件中列出这些需要忽略的文件模式。  
+	格式规范：  
+	    所有空行或者以注释符号#开头的行会被git忽略；  
+	    可以使用标准的模式匹配；  
+	    匹配模式最后跟反斜杠（/）说明忽略的是目录；  
+	    要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号取反。  
+	$ cat .gitignore  
+	  # frameworks/base   # 此为注释，被git忽略  
+	  *.a          # 忽略所有.a结尾的文件  
+	  !lib.a           # 但lib.a除外,!  
+	  build/           # 忽略build目录下的所有文件  
+	  doc/*.txt        # 忽略doc目录下的所有.txt结尾文件，但不包含doc/notes/*.txt  
+	  /TODO       # 仅忽略项目根目录下的TODO文件，但不包含subdir/TODO  
+
+
+删除文件
+
+	git rm [file]  
+	    删除受版本控制的文件或文件夹  
+	    git rm [file]       # 删除文件  
+	    git rm –rf [folder] # 删除文件夹  
+
+移动文件
+
+	git mv [sourcefile] [destinationfile]  
+	    移动源文件为目标文件，相当于重命名。  
+	    git mv readme.txt README  
+	相当于：  
+	    mv readme.txt README  
+	    git rm readme.txt  
+	    git add README  
+
+
+代码提交
+
+	每次提交后，git内部都会生成一个快照，保存所有修改过的文件，并生成一个标识用以标识本次提交，每次提交都有且仅有一个父提交  
+	git commit [option]   
+	    将存储在当前索引的内容全部提交。  
+	1、git commit   
+	    git commit 不加-m参数会启动编辑器以便输入本次提交的说明  
+	  
+	2、git commit [file] –m “message”  
+	    不打开文本编辑器，直接在命令行写注释，然后提交。  
+	    提交后会显示本次提交的完整 SHA-1 校验和， 以及在本次提交中，有多少文件修改过，多少行添改和删改过。  
+	    summerduan@wiki-server:~/test$ git commit a.txt -m "fix the bug2011"  
+	     [master 0f474c1] fix the bug2011  
+	     1 files changed, 1 insertions(+), 0 deletions(-)  
+	  
+	3、git commit –a [file]  
+	    自动把所有已跟踪过的文件暂存起来一并提交，从而跳过 git add 步骤。  
+
+
+
+查看仓库状态
+
+	git status  
+	    查看仓库当前工作于哪个分支；  
+	    查看文件状态：被修改，被删除，新增加等  
+	    每次提交前，都用git status查看下是不是都已暂存起来了，然后再提交。  
+	$ git status  
+	# On branch master  
+	# Changed but not updated:  
+	#   (use "git add <file>..." to update what will be committed)  
+	#   (use "git checkout -- <file>..." to discard changes in working directory)  
+	#  
+	#       modified:   a.txt  
+	#  
+	no changes added to commit (use "git add" and/or "git commit -a")  
+	git合并时发生冲突没有提交。可以用git status查看是哪些文件发生冲突。  
+	这个命令在不同状态下都会有一些操作提示，按照提示操作即可  
+
+
+查看提交历史
+
+	git log  
+	    查看全部提交日志  
+	git log -5  
+	    查看最近5次的提交日志  
+	git log –p  
+	    查看所有提交日志及修改的内容  
+	git log –p --author=“scott”  
+	    查看所有scott提交日志及修改内容  
+	git log --since=“2011-05-24”  
+	    查看2011-05-24以后所有的提交日志  
+	git log --graph  
+	    查看提交日志，以图形方式显示  
+	git log --since=“2 days ago”  
+	    查看这两天的提交日志  
+	git log --until=“2011-05-25”  
+	    查看截止2011-05-25所有的提交日志  
+	git log --name-only  
+	    查看所有修改过的文件  
+	git log --pretty=oneline  
+	    查看提交日志，一行显示  
+	git log --pretty=format:%h:%s  
+	    查看提交日志，显示sha1及提交comments  
+
+查看差异
+
+	git diff  
+	比较当前工作空间与staging area,查看工作空间的变化  
+	git diff --cached  
+	比较staging area与本地仓库,查看暂存区中变化  
+	git diff HEAD  
+	比较当前工作空间与本地仓库  
+	git diff newbranch  
+	比较当前工作空间与newbranch分支  
+	git diff tag1 tag2  
+	比较tag1与tag2  
+	git diff tag1:file1 tag2:file2  
+	比较tag1的file1与tag2的file2  
+	git diff tag1 tag2 file  
+	比较tag1与tag2的file文件  
+	git diff --stat   
+	统计有差异的文件个数  
+
+还原文件
+
+	git revert和git reset的区别：  
+	git revert 是撤销某次操作，此次操作之前的commit都会被保留  
+	git reset 是撤销某次提交，但是此次之后的修改都会被退回到暂存区  
+	git reset --hard  
+	   取消commit，取消add，取消源文件修改  
+	git reset --soft  
+	   取消commit  
+	git reset --mixed  
+	   取消commit，取消add，是默认模式  
+	  
+	git reset --hard HEAD   （比较下）  
+	    恢复到HEAD状态  
+	git reset --hard HEAD^  
+	    彻底撤销最近一次提交  
+	git reset --hard HEAD~3  
+	    彻底撤销最近3次提交  
+	git reset  --soft HEAD~3  
+	    撤销最近3次commit,恢复到index状态，并且工作空间文件内容不变  
+	git reset HEAD filename  
+	    删除暂存的文件  
+	  
+	git revert  
+	   撤销某次提交，此次操作之前的commit都会被保留，但撤销也会作为一次提交进行保存。  
+	git commit --amend   
+	修改最后一次提交。  
+	如果上次提交时遗漏了文件，可以在提交后将文件加入缓存然后用该命令提交即可。  
+	如果缓存中内容没有任何修改，只更新修改的提交注释。  
